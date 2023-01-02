@@ -19,4 +19,14 @@ export class CommentsRepository {
         const newComment = await this.commentsRepository.save(param);
         return newComment;
     }
+
+    async getOneById(comment_id: number) {
+        const data = await this.commentsRepository.findOneBy({comment_id});
+        return data;
+    }
+
+    async updateCommentData(comment: Comments): Promise<Comments> {
+        const data = await this.commentsRepository.save(comment);
+        return data;
+    }
 }  

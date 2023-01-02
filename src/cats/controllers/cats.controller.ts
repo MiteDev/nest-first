@@ -52,13 +52,7 @@ export class CatsController {
     login(@Body() data: LoginRequestDto) {
         return this.authService.jwtLogin(data);
     }
-
-    @ApiOperation({ summary: '로그아웃' })
-    @Post('logout')
-    logout() {
-        return 'logout';
-    }
-
+    
     @ApiOperation({ summary: '고양이 이미지 업로드' })
     @UseInterceptors(FileInterceptor('image', multerOptions('cats')))
     @UseGuards(JwtAuthGuard)
