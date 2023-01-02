@@ -17,6 +17,7 @@ export class CommentsRepository {
 
     async create(param: object) {
         const newComment = await this.commentsRepository.save(param);
+        console.log(newComment);
         return newComment;
     }
 }  
