@@ -40,7 +40,14 @@ export class CommentsService {
         }
     }
 
-    async plusLike(cat_num: number) {
-
+    async plusLike(comment_id: number) {
+        try {
+            const comment = await this.commentsRepository.getOneById(comment_id);
+            comment.likeCnt += 1;
+            const update = await this.commentsRepository.updateCommentData(comment);
+            return update;
+        } catch(err) {
+            throw new BadRequestException(err.message);
+        }
     }
 }

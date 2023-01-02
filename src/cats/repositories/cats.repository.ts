@@ -7,13 +7,16 @@ import { CatRequestDto } from "../dto/cats.request.dto";
 
 @Injectable()
 export class CatsRepository {
-    constructor(@InjectRepository(Cats) private readonly catRepository: Repository<Cats>) {}
+    constructor(
+        @InjectRepository(Cats)
+        private readonly catRepository: Repository<Cats>
+    ) { }
 
     async existsByEmail(email: string): Promise<boolean> {
         try {
-            const result = await this.catRepository.exist({where: {email}});
+            const result = await this.catRepository.exist({ where: { email } });
             return result;
-        } catch(err) {
+        } catch (err) {
             throw new HttpException('db_error', 400);
         }
     }
@@ -23,7 +26,7 @@ export class CatsRepository {
     }
 
     async findCatByEmail(email: string): Promise<Cats | null> {
-        const cat = await this.catRepository.findOneBy({email});
+        const cat = await this.catRepository.findOneBy({ email });
         return cat;
     }
 
@@ -37,12 +40,12 @@ export class CatsRepository {
                 cat_num: cat_num
             }
         })
-        
+
         return cat;
     }
 
     async findByIdAndUpdateImg(cat_num: number, fileName: string): Promise<CatRequestDto> {
-        const cat = await this.catRepository.findOneBy({cat_num});
+        const cat = await this.catRepository.findOneBy({ cat_num });
         cat.imgUrl = fileName;
         const newCat = this.catRepository.save(cat);
 
@@ -50,7 +53,9 @@ export class CatsRepository {
     }
 
     async getAll() {
-        const cat = await this.catRepository.find();
+        const cat = await this.catRepository.find({
+            relations: ['cat_num']
+        });
         return cat;
     }
 }
